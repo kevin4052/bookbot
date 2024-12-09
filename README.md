@@ -1,1 +1,1 @@
-# bookbot, first Boot.Dev project
+# bookbot, my first project with Boot.Dev
