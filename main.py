@@ -1,42 +1,39 @@
+import sys
+from stats import get_num_words
+from stats import get_char_list
+
 def main():
-    path_to_file = "books/frankenstein.txt"
+    argv = sys.argv
+    if len(argv) != 2:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
+        return
+    # Check if the file exists
+    path_to_file = argv[1]
+    try:
+        with open(path_to_file) as f:
+            pass
+    except FileNotFoundError:
+        print(f"File not found: {path_to_file}")
+        return
+    
+
     with open(path_to_file) as f:
         file_contents = f.read()
-        word_count = countWords(file_contents)
-        char_list = countChar(file_contents)
+        word_count = get_num_words(file_contents)
+        char_list = get_char_list(file_contents)
         generateReport(path_to_file, word_count, char_list) 
         
-def countWords(text):
-    return len(text.split())
 
-def countChar(text):
-    freq = {}
-    for char in text.lower():
-        if not char.isalpha():
-            continue
-        if char in freq:
-            freq[char] += 1
-        else:
-            freq[char] = 1
-
-    char_list = []
-    for char in freq:
-        char_list.append({
-            "name": char,
-            "count": freq[char]
-        })
-
-    char_list.sort(reverse=True, key=sort_on)
-    return char_list
-
-def sort_on(dict):
-    return dict["count"]
 
 def generateReport(file_path, word_count, char_count):
-    print(f"--- Begin report of {file_path} ---")
-    print(f"{word_count} words found in the document \n")
+    print("============ BOOKBOT ============")
+    print(f"Analyzing book found at {file_path}...")
+    print(f"----------- Word Count ----------")
+    print(f"Found {word_count} total words")
+    print(f"--------- Character Count -------")
     for char in char_count:
-        print(f"The '{char['name']}' character was found {char['count']} times")
-    print("--- End report ---")
+        print(f"'{char['name']}: {char['count']}'")
+    print("============= END ===============")
 
 main()
